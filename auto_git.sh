@@ -7,7 +7,8 @@
 GITHUB_USERNAME="enocholaleye"
 
 # Define the repository directory
-REPO_DIR="/path/to/your/repo"
+REPO_DIR="REPO_DIR="$HOME/enocholaleye.github.io"
+"
 cd $REPO_DIR
 
 # Set up the GitHub remote URL with your username and the environment variable for the PAT
