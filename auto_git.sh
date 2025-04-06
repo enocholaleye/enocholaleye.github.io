@@ -3,6 +3,16 @@
 # Navigate to your repository folder (if not already in it)
 # cd /path/to/your/repo
 
+# Define your GitHub username (no need to store the PAT in the script)
+GITHUB_USERNAME="enocholaleye"
+
+# Define the repository directory
+REPO_DIR="/path/to/your/repo"
+cd $REPO_DIR
+
+# Set up the GitHub remote URL with your username and the environment variable for the PAT
+git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/enocholaleye/enocholaleye.github.io.git
+
 # Fetch the latest changes from the remote
 git fetch origin
 
