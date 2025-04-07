@@ -1,38 +1,57 @@
 #!/bin/bash
 
-# Navigate to your repository folder (if not already in it)
-# cd /path/to/your/repo
-
-# Define your GitHub username (no need to store the PAT in the script)
+# Set variables
 GITHUB_USERNAME="enocholaleye"
+REPO_DIR="$HOME/enocholaleye.github.io"
+EMAIL="eolaleye.techadvisor@gmail.com"
+LOG_FILE="$HOME/auto_git.log"
 
-# Define the repository directory
-REPO_DIR="REPO_DIR="$HOME/enocholaleye.github.io"
-"
-cd $REPO_DIR
+# Load your token from an environment variable
+# Add this to your ~/.bashrc or ~/.bash_profile: export GITHUB_PAT=your_token
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "GitHub token (GITHUB_TOKEN) is not set. Exiting." | tee -a "$LOG_FILE"
+  exit 1
+fi
 
-# Set up the GitHub remote URL with your username and the environment variable for the PAT
-git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/enocholaleye/enocholaleye.github.io.git
+cd "$REPO_DIR" || {
+  echo "Repo directory $REPO_DIR not found." | tee -a "$LOG_FILE"
+  exit 1
+}
 
-# Fetch the latest changes from the remote
+# Update remote with PAT for authentication
+git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/enocholaleye.github.io.git
+
+# Fetch and rebase
 git fetch origin
+if ! git pull origin main --rebase; then
+  echo "Rebase failed!" | tee -a "$LOG_FILE"
+  echo "🚨 Git rebase failed for auto_git.sh on $(date)" | mail -s "Git Automation Failed" "$EMAIL"
+  exit 1
+fi
 
-# Pull the latest changes, rebase if possible
-git pull origin main --rebase
-
-# Check if there are uncommitted changes
+# Check for changes
 if [ -n "$(git status --porcelain)" ]; then
-  echo "There are uncommitted changes. Committing them..."
-  # Add changes to staging
-  git add .
+  echo "Uncommitted changes found. Committing..." | tee -a "$LOG_FILE"
 
-  # Commit changes with a message
+  git add .
   git commit -m "Automated commit: $(date)"
 
-  # Push changes to the remote repository
-  git push origin main
+  if git push origin main; then
+    echo "✅ Push successful on $(date)" | tee -a "$LOG_FILE"
+    echo "✅ Git push successful for your automation script on $(date)" | mail -s "Git Automation Success" "$EMAIL"
+  else
+    echo "❌ Push failed!" | tee -a "$LOG_FILE"
+    echo "❌ Git push failed for your automation script on $(date)" | mail -s "Git Automation Failed" "$EMAIL"
+  fi
 else
-  echo "No changes to commit. Proceeding with push."
-  # Push changes if there were no local modifications
-  git push origin main
+  echo "No changes to commit. Still pushing..." | tee -a "$LOG_FILE"
+
+  if git push origin main; then
+    echo "✅ Push with no changes successful on $(date)" | tee -a "$LOG_FILE"
+    echo "✅ Git push (no new commits) completed successfully on $(date)" | mail -s "Git Automation Success" "$EMAIL"
+  else
+    echo "❌ Push with no changes failed!" | tee -a "$LOG_FILE"
+    echo "❌ Git push (no new commits) failed on $(date)" | mail -s "Git Automation Failed" "$EMAIL"
+  fi
 fi
+
