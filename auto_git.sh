@@ -21,6 +21,12 @@ cd "$REPO_DIR" || {
 # Update remote with PAT for authentication
 git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/enocholaleye.github.io.git
 
+# Stage all changes before stashing (optional but safe)
+git add .
+
+# Stash any changes (includes untracked files)
+git stash --include-untracked -m "Auto-stash before pulling with rebase"
+
 # Fetch and rebase
 git fetch origin
 if ! git pull origin main --rebase; then
@@ -28,6 +34,9 @@ if ! git pull origin main --rebase; then
   echo "🚨 Git rebase failed for auto_git.sh on $(date)" | mail -s "Git Automation Failed" "$EMAIL"
   exit 1
 fi
+
+# Restore stashed changes
+git stash pop || echo "No stash to pop, or merge conflicts occurred."
 
 # Check for changes
 if [ -n "$(git status --porcelain)" ]; then
