@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Projects — Enoch Olaleye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:   #080E1D; --navy2: #0D1628; --navy3: #12213A;
+    --teal:   #00C8D4; --teal2: #00A3AD;
+    --amber:  #F5A623; --amber2: #C8831A;
+    --white:  #EEF2F7; --muted: #7A90A8;
+    --border: #1E3050; --card:  #0F1C30;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy); color: var(--white);
+    font-family: 'Lato', sans-serif; font-size: 16px; line-height: 1.7;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px; opacity: 0.18;
+    pointer-events: none; z-index: 0;
+  }
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(8,14,29,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--teal); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--teal); }
+
+  .page-header {
+    position: relative; z-index: 1;
+    padding: 8rem 4rem 4rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .page-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--teal); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.6rem; }
+  .page-label::before { content: '// '; color: var(--amber); }
+  .page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.8rem; color: var(--white); line-height: 1.1; margin-bottom: 1rem; }
+  .page-title span { color: var(--teal); }
+  .page-sub { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--muted); max-width: 680px; line-height: 1.8; }
+
+  /* Project sections */
+  .project-section {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+    padding: 4rem 4rem; border-bottom: 1px solid var(--border);
+  }
+  .project-section:nth-child(even) { background: rgba(13,22,40,0.5); }
+
+  .proj-header { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; margin-bottom: 2rem; }
+  .proj-num-large {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    color: var(--amber); letter-spacing: 0.18em; margin-bottom: 0.5rem;
+  }
+  .proj-title-large { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--white); margin-bottom: 0.4rem; }
+  .proj-industry-large { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--teal); }
+  .proj-github-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.2rem;
+    border: 1px solid var(--border); border-radius: 4px;
+    color: var(--muted); text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .proj-github-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+  .proj-body { display: grid; grid-template-columns: 1fr 340px; gap: 3rem; }
+  .proj-content {}
+  .proj-overview { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+  .proj-outcomes-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
+    color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .proj-outcome {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    margin-bottom: 0.7rem; font-size: 0.88rem; color: var(--muted);
+  }
+  .proj-outcome::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 0.1rem; }
+
+  .proj-sidebar {}
+  .sidebar-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem; margin-bottom: 1.2rem;
+  }
+  .sidebar-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.9rem; }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; background: rgba(0,200,212,0.08); border: 1px solid rgba(0,200,212,0.2); color: var(--teal); padding: 0.22rem 0.55rem; border-radius: 3px; letter-spacing: 0.04em; }
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(0,200,212,0.08), rgba(245,166,35,0.06));
+    border: 1px solid rgba(0,200,212,0.2); border-radius: 8px; padding: 1.5rem;
+  }
+  .highlight-stat { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--teal); line-height: 1; }
+  .highlight-stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .arch-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin: 2rem 0 1rem; }
+  .arch-diagram {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+    color: var(--teal); line-height: 1.8; white-space: pre;
+    overflow-x: auto;
+  }
+
+  .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 2rem; background: var(--teal); color: var(--navy); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: background 0.2s, transform 0.15s; }
+  .btn-primary:hover { background: #00dde8; transform: translateY(-2px); }
+
+  footer { position: relative; z-index: 1; background: var(--navy); border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+  footer span { color: var(--teal); }
+
+  @media (max-width: 900px) {
+    .page-header { padding: 7rem 1.5rem 2rem; }
+    .project-section { padding: 3rem 1.5rem; }
+    .proj-body { grid-template-columns: 1fr; }
+    .proj-header { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Enoch<span>.</span>dev</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#nexahub">NexaHub</a></li>
+    <li><a href="#vaultedge">VaultEdge</a></li>
+    <li><a href="#medicore">MediCore</a></li>
+    <li><a href="#swifthaul">SwiftHaul</a></li>
+    <li><a href="resume.pdf" download style="color:var(--amber)">↓ Resume</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="page-label">Portfolio</div>
+  <h1 class="page-title">Production-Grade<br/><span>AWS Architectures</span></h1>
+  <p class="page-sub">
+    // Four self-directed infrastructure projects designed to production standards across regulated industries —
+    fintech, healthcare, logistics, and large-scale e-commerce.
+    All infrastructure is Terraform-managed, CI/CD automated via GitHub Actions, and built to production architectural standards.
+  </p>
+</div>
+
+<!-- PROJECT 01 -->
+<div class="project-section" id="nexahub">
+  <div class="proj-header">
+    <div>
+      <div class="proj-num-large">PROJECT 01 · E-COMMERCE ARCHITECTURE · KUBERNETES</div>
+      <div class="proj-title-large">NexaHub Simulation — E-Commerce Platform on Amazon EKS</div>
+      <div class="proj-industry-large">Kubernetes · Microservices · Multi-tenancy · GitOps</div>
+    </div>
+    <a href="https://github.com/enocholaleye" target="_blank" class="proj-github-btn">
+      &lt;/&gt; View on GitHub ↗
+    </a>
+  </div>
+  <div class="proj-body">
+    <div class="proj-content">
+      <p class="proj-overview">
+        A production Amazon EKS cluster simulating the infrastructure demands of a high-traffic multi-vendor e-commerce marketplace. 
+        Designed to solve the core scaling challenge that plagues growing platforms: all services scaling as one unit, 
+        even when only one service is under load. The architecture enables each of 11 microservices to scale independently 
+        based on its own metrics — solving both the cost and availability problem simultaneously.
+      </p>
+      <div class="proj-outcomes-title">Key Architecture Decisions</div>
+      <div class="proj-outcome">Horizontal Pod Autoscaler (HPA) configured per service — payments service scales to 50 pods independently while reviews service remains at 1–2 pods, eliminating the over-provisioning that causes unnecessary cost.</div>
+      <div class="proj-outcome">Namespace-based multi-tenancy with Kubernetes Resource Quotas: premium namespaces get guaranteed CPU and memory allocation; standard namespaces operate on best-effort with enforced limits.</div>
+      <div class="proj-outcome">GitOps CI/CD pipeline: code push → GitHub Actions → Docker build → ECR push → Helm deploy to EKS, full rollout under 8 minutes with zero manual steps and full audit trail.</div>
+      <div class="proj-outcome">Helm charts written to be portable to GKE unchanged — workload portability as a first-class design constraint, enabling a future multi-cloud strategy without re-engineering application manifests.</div>
+      <div class="proj-outcome">Cluster Autoscaler provisions new worker nodes automatically under sustained load; Spot instance node group for burst capacity at 60% cost reduction versus On-Demand.</div>
+      <div class="proj-outcome">External Secrets Operator bridges AWS Secrets Manager to Kubernetes Secrets — credential rotation in Secrets Manager propagates to the cluster automatically, zero hardcoded secrets anywhere.</div>
+      <div class="arch-label">Architecture Overview</div>
+      <div class="arch-diagram">INTERNET → [WAF] → [ALB — Ingress Controller]
+        ├── /payments  → payments-svc   [HPA: 3–50 pods]
+        ├── /orders    → orders-svc     [HPA: 2–30 pods]
+        ├── /catalogue → catalogue-svc  [HPA: 2–20 pods]
+        └── ...8 more microservices
+
+[EKS CLUSTER]
+  ├── Namespace: enterprise  [CPU: 64 cores guaranteed]
+  ├── Namespace: standard    [CPU: 32 cores best-effort]
+  └── Namespace: platform    [11 services + HPA]
+
+[Worker Nodes]
+  ├── On-Demand: t3.large x3 (baseline)
+  └── Spot: m5.xlarge 0–10 (burst, 60% cheaper)
+
+[Data Layer]
+  ├── RDS Aurora Multi-AZ  (persistent data)
+  ├── ElastiCache Redis     (sessions + cache)
+  └── S3                   (assets + documents)
+
+[Observability]
+  └── CloudWatch Container Insights (per-service dashboards)</div>
+    </div>
+    <div class="proj-sidebar">
+      <div class="highlight-box" style="margin-bottom:1.2rem;">
+        <div class="highlight-stat">11</div>
+        <div class="highlight-stat-label">Microservices on EKS</div>
+        <div style="margin-top:1rem;">
+          <div class="highlight-stat" style="font-size:1.4rem;">50</div>
+          <div class="highlight-stat-label">Max pods per service (HPA)</div>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">Stack</div>
+        <div class="stack-tags">
+          <span class="tag">Amazon EKS</span><span class="tag">Helm</span>
+          <span class="tag">HPA</span><span class="tag">Cluster Autoscaler</span>
+          <span class="tag">ALB Ingress</span><span class="tag">External Secrets</span>
+          <span class="tag">Docker</span><span class="tag">Amazon ECR</span>
+          <span class="tag">RDS Aurora Multi-AZ</span><span class="tag">ElastiCache</span>
+          <span class="tag">Terraform</span><span class="tag">GitHub Actions</span>
+          <span class="tag">CloudWatch CI</span><span class="tag">WAF</span>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">Compliance &amp; Standards</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);line-height:1.9;">
+          ✓ Multi-cloud portability (Helm → GKE)<br/>
+          ✓ Zero hardcoded credentials<br/>
+          ✓ Full GitOps audit trail<br/>
+          ✓ Cost-optimised (Spot instances)<br/>
+          ✓ Entire cluster IaC (Terraform)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT 02 -->
+<div class="project-section" id="vaultedge">
+  <div class="proj-header">
+    <div>
+      <div class="proj-num-large">PROJECT 02 · FINTECH · CBN COMPLIANCE ARCHITECTURE</div>
+      <div class="proj-title-large">VaultEdge Simulation — CBN-Regulated Digital Banking Infrastructure</div>
+      <div class="proj-industry-large">ECS Fargate · Defence-in-Depth Security · Aurora Multi-AZ</div>
+    </div>
+    <a href="https://github.com/enocholaleye" target="_blank" class="proj-github-btn">
+      &lt;/&gt; View on GitHub ↗
+    </a>
+  </div>
+  <div class="proj-body">
+    <div class="proj-content">
+      <p class="proj-overview">
+        Production-grade, CBN-compliant AWS infrastructure modelled on the architecture required by a licensed digital bank. 
+        Designed to the security and availability standards of a strict central bank regulatory framework — 
+        defence-in-depth security, zero-downtime database operations, and a fully auditable infrastructure trail.
+      </p>
+      <div class="proj-outcomes-title">Key Architecture Decisions</div>
+      <div class="proj-outcome">Defence-in-depth security layering: WAF at the edge (blocks malicious traffic before it reaches the application), GuardDuty for continuous ML-powered threat detection, KMS encryption at rest and in transit across all data stores.</div>
+      <div class="proj-outcome">AWS Secrets Manager with automatic rotation — zero hardcoded credentials anywhere in the infrastructure. Database passwords, API keys, and service credentials all managed and rotated programmatically.</div>
+      <div class="proj-outcome">AWS Security Hub aggregates findings from GuardDuty, Config, and Inspector into a single compliance posture dashboard — providing the continuous monitoring evidence required for CBN regulatory review.</div>
+      <div class="proj-outcome">ECS Fargate for containerised microservices: serverless compute — AWS manages underlying nodes, eliminating a full layer of operational overhead while maintaining full container control.</div>
+      <div class="proj-outcome">Aurora Multi-AZ with automatic failover — in the event of a primary instance failure, standby promotes in under 30 seconds, meeting the zero-downtime availability requirements of a core banking API.</div>
+      <div class="proj-outcome">Full infrastructure provisioned as Terraform code — entire environment reproducible from a single command, making disaster recovery and environment cloning (dev → staging → prod) fully automated.</div>
+      <div class="arch-label">Security Architecture</div>
+      <div class="arch-diagram">INTERNET
+  └── [WAF]           — SQL injection, XSS, rate limiting
+  └── [ALB]           — SSL termination, request routing
+  └── [ECS Fargate]   — containerised microservices (no node mgmt)
+  └── [API Gateway]   — managed API layer
+  └── [Lambda]        — event-driven functions
+
+[DATA LAYER]
+  ├── RDS Aurora Multi-AZ  — automatic failover (&lt;30s)
+  ├── Secrets Manager      — zero hardcoded credentials
+  └── KMS                  — encryption at rest + transit
+
+[SECURITY &amp; COMPLIANCE]
+  ├── GuardDuty      — continuous threat detection
+  ├── Security Hub   — aggregated compliance posture
+  ├── AWS Config     — configuration compliance rules
+  ├── CloudTrail     — immutable API audit log
+  └── CloudWatch     — real-time alerting + dashboards</div>
+    </div>
+    <div class="proj-sidebar">
+      <div class="highlight-box" style="margin-bottom:1.2rem;">
+        <div class="highlight-stat">CBN</div>
+        <div class="highlight-stat-label">Compliant Architecture</div>
+        <div style="margin-top:1rem;">
+          <div class="highlight-stat" style="font-size:1.4rem;">&lt;30s</div>
+          <div class="highlight-stat-label">Aurora failover SLA</div>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">Stack</div>
+        <div class="stack-tags">
+          <span class="tag">ECS Fargate</span><span class="tag">RDS Aurora Multi-AZ</span>
+          <span class="tag">API Gateway</span><span class="tag">Lambda</span>
+          <span class="tag">WAF</span><span class="tag">GuardDuty</span>
+          <span class="tag">KMS</span><span class="tag">Security Hub</span>
+          <span class="tag">AWS Config</span><span class="tag">Secrets Manager</span>
+          <span class="tag">CloudTrail</span><span class="tag">Docker</span>
+          <span class="tag">ECR</span><span class="tag">Terraform</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">CBN Compliance Controls</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);line-height:1.9;">
+          ✓ Data encryption at rest + transit<br/>
+          ✓ Immutable audit trail (CloudTrail)<br/>
+          ✓ Continuous threat monitoring<br/>
+          ✓ Secrets rotation (no static creds)<br/>
+          ✓ Config compliance posture<br/>
+          ✓ Multi-AZ high availability
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT 03 -->
+<div class="project-section" id="medicore">
+  <div class="proj-header">
+    <div>
+      <div class="proj-num-large">PROJECT 03 · HEALTHCARE · NDPA COMPLIANCE ARCHITECTURE</div>
+      <div class="proj-title-large">MediCore Simulation — NDPA-Compliant Healthcare EHR Infrastructure</div>
+      <div class="proj-industry-large">Auto Scaling · Multi-AZ RDS · Systems Manager · No-SSH Architecture</div>
+    </div>
+    <a href="https://github.com/enocholaleye" target="_blank" class="proj-github-btn">
+      &lt;/&gt; View on GitHub ↗
+    </a>
+  </div>
+  <div class="proj-body">
+    <div class="proj-content">
+      <p class="proj-overview">
+        Secure, NDPA-compliant AWS environment modelled on the infrastructure requirements of a multi-site hospital 
+        Electronic Health Record platform. Patient record systems have zero tolerance for availability failures — 
+        this architecture is designed around that constraint, with compliance controls that satisfy
+        data protection regulations (NDPA) for sensitive health data.
+      </p>
+      <div class="proj-outcomes-title">Key Architecture Decisions</div>
+      <div class="proj-outcome">Auto Scaling Groups ensure the application layer scales automatically under peak clinical load (morning ward rounds, end-of-day data entry surges) and scales back down during off-peak hours to control costs.</div>
+      <div class="proj-outcome">RDS MySQL Multi-AZ with automated backups and point-in-time recovery — patient record data is never at risk from a single instance failure. Standby instance promotes automatically with zero data loss.</div>
+      <div class="proj-outcome">AWS Systems Manager Session Manager replaces SSH entirely — no exposed port 22, no key management overhead, full session logging to CloudTrail for compliance. Every access to every instance is audited.</div>
+      <div class="proj-outcome">ACM-managed SSL/TLS certificates with automatic renewal — no certificate expiry risk, no manual rotation. All patient data in transit is encrypted end-to-end.</div>
+      <div class="proj-outcome">Secrets Manager for database credentials and API keys with automatic rotation — no static credentials that could be harvested if a server is compromised.</div>
+      <div class="proj-outcome">CloudTrail logging across all regions captures every API call — providing the audit evidence required for NDPA compliance review and breach notification procedures.</div>
+    </div>
+    <div class="proj-sidebar">
+      <div class="highlight-box" style="margin-bottom:1.2rem;">
+        <div class="highlight-stat">NDPA</div>
+        <div class="highlight-stat-label">Compliant Architecture</div>
+        <div style="margin-top:1rem;">
+          <div class="highlight-stat" style="font-size:1.4rem;">0</div>
+          <div class="highlight-stat-label">Exposed SSH ports</div>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">Stack</div>
+        <div class="stack-tags">
+          <span class="tag">VPC</span><span class="tag">EC2</span>
+          <span class="tag">RDS MySQL Multi-AZ</span><span class="tag">ALB</span>
+          <span class="tag">Auto Scaling Groups</span><span class="tag">Route53</span>
+          <span class="tag">ACM</span><span class="tag">Secrets Manager</span>
+          <span class="tag">CloudTrail</span><span class="tag">CloudWatch</span>
+          <span class="tag">Systems Manager</span><span class="tag">Docker</span>
+          <span class="tag">ECR</span><span class="tag">Terraform</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT 04 -->
+<div class="project-section" id="swifthaul">
+  <div class="proj-header">
+    <div>
+      <div class="proj-num-large">PROJECT 04 · LOGISTICS · CLOUD MIGRATION ARCHITECTURE</div>
+      <div class="proj-title-large">SwiftHaul Simulation — Emergency Cloud Migration Architecture</div>
+      <div class="proj-industry-large">Cloud Migration · High Availability · Zero Data Loss · Terraform</div>
+    </div>
+    <a href="https://github.com/enocholaleye" target="_blank" class="proj-github-btn">
+      &lt;/&gt; View on GitHub ↗
+    </a>
+  </div>
+  <div class="proj-body">
+    <div class="proj-content">
+      <p class="proj-overview">
+        An emergency migration architecture modelled on the scenario of a logistics company whose on-premises infrastructure 
+        is failing — systems degrading, operations at risk. This project demonstrates the decision-making, architecture design, 
+        and execution required to move a business off dying infrastructure onto AWS quickly, safely, and with zero data loss.
+        The most important skill tested here is not technical depth but operational judgement under pressure.
+      </p>
+      <div class="proj-outcomes-title">Key Architecture Decisions</div>
+      <div class="proj-outcome">VPC design prioritises separation of concerns from day one: public subnets for ALB and NAT Gateway, private subnets for application and database layers — no database ever exposed to the internet.</div>
+      <div class="proj-outcome">ALB with health checks ensures traffic is only routed to healthy instances — if an EC2 instance fails during migration or operation, the ALB removes it from rotation automatically.</div>
+      <div class="proj-outcome">RDS MySQL with automated backups and Multi-AZ configured from the start — data migration validated against RDS before cutting over, ensuring zero data loss is verifiable before the old system is decommissioned.</div>
+      <div class="proj-outcome">S3 for static assets and document storage — removes file system dependencies from EC2 instances, making the application layer stateless and therefore horizontally scalable and resilient to instance failure.</div>
+      <div class="proj-outcome">CloudWatch alarms and SNS notifications configured before go-live — operations team receives immediate alerts on CPU, memory, RDS connections, and ALB error rates from day one.</div>
+      <div class="proj-outcome">Full Terraform codebase from day one — if any component fails post-migration, it can be destroyed and reprovisioned in minutes without manual intervention.</div>
+    </div>
+    <div class="proj-sidebar">
+      <div class="highlight-box" style="margin-bottom:1.2rem;">
+        <div class="highlight-stat">0</div>
+        <div class="highlight-stat-label">Data loss on migration</div>
+        <div style="margin-top:1rem;">
+          <div class="highlight-stat" style="font-size:1.4rem;">HA</div>
+          <div class="highlight-stat-label">From day one</div>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-label">Stack</div>
+        <div class="stack-tags">
+          <span class="tag">VPC</span><span class="tag">EC2</span>
+          <span class="tag">RDS MySQL</span><span class="tag">S3</span>
+          <span class="tag">ALB</span><span class="tag">NAT Gateway</span>
+          <span class="tag">IAM</span><span class="tag">CloudWatch</span>
+          <span class="tag">SNS</span><span class="tag">Terraform</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:relative;z-index:1;text-align:center;padding:4rem 2rem;border-top:1px solid var(--border);">
+  <a href="index.html" class="btn-primary">&#8592; Back to Home</a>
+  &nbsp;&nbsp;
+  <a href="resume.pdf" download class="btn-primary" style="background:var(--amber);box-shadow:0 0 20px rgba(245,166,35,0.25);">&#8595; Download CV</a>
+</div>
+
+<footer>
+  <p>Enoch Olaleye · <span>Cloud Infrastructure Engineer</span> · Ota, Nigeria · 2026</p>
+</footer>
+</body>
+</html>
